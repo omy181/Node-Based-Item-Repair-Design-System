@@ -5,41 +5,47 @@ This system was developed for my Steam game Pieces of the Past, a cozy game abou
 
 ![vpet_GIF_reworked](https://github.com/user-attachments/assets/29424e8f-131e-4091-9b49-d02dc2eb2041)
 
-The repairing consists of taking out and putting back pieces together and these pieces's putting order is not linear it is more like a big graph with complex dependencies. So i had to come up with a solution for making these designs functional.
+The repair process involves removing and reassembling object parts, but the order isn't linear. Instead, it's a complex dependency graph — pieces must be placed in a specific structure based on what’s already assembled or missing.
 
-The repair process involves removing and reassembling object parts. However, the assembly order isn’t linear — it forms a complex dependency graph. I needed a system to make designing and managing this logic intuitive and functional.
+I needed a system that could handle this non-linear logic while remaining easy to use. Most importantly, designers should be able to implement it without writing any code.
 
-Initially, I created two types of components:
+At first, I created two types of components:
 
-- One for pieces
+- Piece Component
 
-- One for slots (invisible parent objects that hold pieces)
+- Slot Component (invisible parent objects that hold pieces)
 
-When a piece is dragged onto a slot, it snaps to that slot — if the slot accepts it. The slot checks:
+When a piece is dragged onto a slot, it snaps to it — if accepted. Each slot checks:
 
-- Is the piece in the accepted pieces list?
+- Is the piece in its accepted list?
 
 - Are all above slots empty?
 
 - Are all below slots filled?
 
-Each Slot component must be manually added to slot GameObjects, with dependencies manually assigned.
+Each Slot component must be manually added to its GameObject, and dependencies must be assigned manually.
 
 ![image](https://github.com/user-attachments/assets/743e25e2-8e0b-4a07-b055-ccc9342ecdff)
 
-This is the Piece component. A space GameObject is assigned to define its fallback position (when not placed in a slot). If a piece starts in a slot, that must be predefined.
+The Piece component also requires a fallback "space" GameObject, which defines where the piece returns to if it's not placed into a slot.
+If a piece starts in a slot at the beginning of a level, that must also be predefined.
 
 ![image](https://github.com/user-attachments/assets/03fee4ce-c6c1-40ce-a442-e78c350dc68a)
 
-While this first version worked, manually creating slot objects and linking dependencies was tedious.
-To streamline the process, I built a node-based editor using the open-source library xNode.
+While functional, this approach was tedious and error-prone, especially for complex objects with many dependencies.
 
-With it, designers can create Slot and Piece nodes, then simply connect them to define logic visually.
+## Final Version (Graph-Based Design)
 
-Here’s an example graph used in-game:
+To simplify setup, I built a node-based editor using the open-source library xNode.
+
+With this system, designers can visually create and connect Slot and Piece nodes.
+The graph editor handles the generation of all slot objects, dependency logic, and piece behaviors automatically.
+
+Here’s an example of a graph used in the game:
 
 ![image](https://github.com/user-attachments/assets/f71125cb-e381-4bd9-8ab2-260d3351d87d)
 
-The graph is composed of only two node types: Slot and Piece.
+The graph uses only two node types: **Slot** and **Piece**.
+By connecting nodes in the correct order, designers can easily define complex logic — without ever touching code.
 
 ![image](https://github.com/user-attachments/assets/5e5d7d2a-7050-4edc-8f17-519cefab0128)
