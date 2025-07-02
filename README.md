@@ -49,3 +49,5 @@ The graph uses only two node types: **Slot** and **Piece**.
 By connecting nodes in the correct order, designers can easily define complex logic — without ever touching code.
 
 ![image](https://github.com/user-attachments/assets/5e5d7d2a-7050-4edc-8f17-519cefab0128)
+
+Note: The code for this project is not publicly available, as it is still a work in progress.
